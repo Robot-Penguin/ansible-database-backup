@@ -1,0 +1,18 @@
+---
+- name: Database backup
+  hosts: test-server
+  remote_user: root
+  
+  tasks:
+  - name: Create backup Directory
+    file:
+      path: /var/www/html/databases/
+      state: directory
+
+  - name: Dump Databases
+    mysql_db:
+      state: dump
+      name: all
+      target: /var/www/html/databases/{{ ansible_date_time.date }}.sql
+      login_user: root
+      login_password: password
