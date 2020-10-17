@@ -16,3 +16,11 @@
       target: /var/www/html/databases/{{ ansible_date_time.date }}.sql
       login_user: root
       login_password: password
+
+  - name: Archive Database dump
+    become: yes
+    archive:
+      path: /var/www/html/databases/*.sql
+      dest: /var/www/html/databases/{{ ansible_date_time.date }}.tar.gz
+      remove: yes
+
