@@ -19,8 +19,18 @@
 
   - name: Archive Database dump
     become: yes
+    become_user: root
     archive:
       path: /var/www/html/databases/*.sql
       dest: /var/www/html/databases/{{ ansible_date_time.date }}.tar.gz
       remove: yes
+
+  - name: Fetch Backup from the server
+    become: yes
+    become_user: root
+    synchronize:
+      mode: pull
+      src: "/var/www/html/databases/"
+      dest: "~/backup/"
+      rsync_opts: "--remove-source-files"
 
