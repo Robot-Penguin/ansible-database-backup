@@ -1,14 +1,13 @@
 ---
-- name: Database backup
+- name: Database Backup
   hosts: test-server
-  remote_user: root
-  
+  become: True
+  gather_facts: True
   tasks:
-  - name: Create backup Directory
+  - name: Create Backup Directory
     file:
       path: /var/www/html/databases/
       state: directory
-
   - name: Dump Databases
     mysql_db:
       state: dump
@@ -16,21 +15,15 @@
       target: /var/www/html/databases/{{ ansible_date_time.date }}.sql
       login_user: root
       login_password: password
-
-  - name: Archive Database dump
-    become: yes
-    become_user: root
+  - name: Archive Database Dump
     archive:
       path: /var/www/html/databases/*.sql
       dest: /var/www/html/databases/{{ ansible_date_time.date }}.tar.gz
       remove: yes
-
-  - name: Fetch Backup from the server
-    become: yes
-    become_user: root
+  - name: Fetch Backup From The Server
     synchronize:
       mode: pull
       src: "/var/www/html/databases/"
       dest: "~/backup/"
-      rsync_opts: "--remove-source-files"
-
+      rsync_opts: "--remove-source-files
+...
