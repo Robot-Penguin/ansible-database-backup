@@ -25,5 +25,5 @@
       mode: pull
       src: "/var/www/html/databases/"
       dest: "~/backup/"
-      rsync_opts: "--remove-source-files
+      rsync_opts: "--remove-source-files"
 ...
