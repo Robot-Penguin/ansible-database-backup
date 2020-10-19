@@ -6,24 +6,24 @@
   tasks:
   - name: Create Backup Directory
     file:
-      path: /var/www/html/databases/
+      path: ~/databases/
       state: directory
   - name: Dump Databases
     mysql_db:
       state: dump
       name: all
-      target: /var/www/html/databases/{{ ansible_date_time.date }}.sql
+      target: ~/databases/{{ ansible_date_time.date }}.sql
       login_user: root
       login_password: password
   - name: Archive Database Dump
     archive:
-      path: /var/www/html/databases/*.sql
-      dest: /var/www/html/databases/{{ ansible_date_time.date }}.tar.gz
+      path: ~/databases/*.sql
+      dest: ~/databases/{{ ansible_date_time.date }}.tar.gz
       remove: yes
   - name: Fetch Backup From The Server
     synchronize:
       mode: pull
-      src: "/var/www/html/databases/"
+      src: "~/databases/"
       dest: "~/backup/"
       rsync_opts: "--remove-source-files"
 ...
